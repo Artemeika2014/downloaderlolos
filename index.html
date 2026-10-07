@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Download LoLOS — Скачать систему</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: linear-gradient(135deg, #0f0f2e, #1a1a4a);
+    --glass: rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.12);
+    --text: #fff;
+    --accent: #7b5ea7;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Google Sans', 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 20px;
+    -webkit-tap-highlight-color: transparent;
+}
+.container { max-width: 800px; margin: 0 auto; }
+.hero { text-align: center; padding: 40px 20px 30px; }
+.hero .logo {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, #b89fd6, #7b5ea7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+}
+.hero .sub {
+    font-size: 0.85rem;
+    opacity: 0.5;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+.hero .desc {
+    margin-top: 20px;
+    font-size: 0.95rem;
+    opacity: 0.75;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 30px 0 16px;
+    padding-left: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: var(--accent);
+    border-radius: 2px;
+}
+.os-list { display: flex; flex-direction: column; gap: 12px; }
+.os-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 24px;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.os-card:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+.os-card:active { transform: scale(0.98); }
+.os-card .icon {
+    width: 56px; height: 56px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #7b5ea7, #5a4a8a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+.os-card .info { flex: 1; min-width: 0; }
+.os-card .info .version { font-size: 1.15rem; font-weight: 600; }
+.os-card .info .meta {
+    font-size: 0.75rem;
+    opacity: 0.55;
+    margin-top: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.os-card .info .meta span { font-family: 'Courier New', monospace; }
+.os-card .download-icon {
+    font-size: 1.4rem;
+    opacity: 0.6;
+    transition: all 0.25s ease;
+}
+.os-card:hover .download-icon { opacity: 1; transform: translateY(2px); }
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--glass);
+    border-radius: 24px;
+    border: 1px solid var(--glass-border);
+    opacity: 0.6;
+    font-size: 0.95rem;
+}
+.info-block {
+    margin-top: 30px;
+    padding: 20px 24px;
+    background: rgba(123, 94, 167, 0.1);
+    border: 1px solid rgba(123, 94, 167, 0.25);
+    border-radius: 18px;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    opacity: 0.85;
+}
+.info-block strong { color: #b89fd6; }
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(0, 0, 0, 0.9);
+    padding: 12px 24px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 5000;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.success { background: rgba(74, 222, 128, 0.9); color: #0a0a1a; }
+.toast.error { background: rgba(255, 59, 48, 0.9); }
+@media (max-width: 600px) {
+    .hero .logo { font-size: 2.4rem; }
+    .os-card { padding: 16px 18px; gap: 14px; }
+    .os-card .icon { width: 48px; height: 48px; font-size: 1.3rem; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <div class="logo">LoLOS</div>
+        <div class="sub">Download Center</div>
+        <div class="desc">Выберите версию системы для установки. После скачивания файла обновления загрузите его в установщик LoLOS.</div>
+    </div>
+    <div class="section-title">Доступные версии</div>
+    <div id="osListContainer"><div class="empty-state">Загрузка...</div></div>
+    <div class="info-block">
+        <strong>Как установить:</strong><br>
+        1. Нажмите на нужную версию — скачается файл обновления<br>
+        2. Откройте установщик LoLOS<br>
+        3. Загрузите скачанный файл<br>
+        4. Система установится автоматически
+    </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({
+    apiKey: "AIzaSyD9wOAfJ_hVfs9Xt0REXhc4G010LRqtv3s",
+    authDomain: "lolos-51c9c.firebaseapp.com",
+    projectId: "lolos-51c9c",
+    storageBucket: "lolos-51c9c.firebasestorage.app",
+    messagingSenderId: "143157807464",
+    appId: "1:143157807464:web:1a1e257800cbc341656edd"
+});
+const db = firebase.firestore();
+
+function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show ' + type;
+    clearTimeout(t._timeout);
+    t._timeout = setTimeout(() => t.className = 'toast ' + type, 2500);
+}
+
+function formatBytes(b) {
+    if (!b) return '—';
+    if (b < 1024) return b + ' Б';
+    if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' КБ';
+    return (b / (1024 * 1024)).toFixed(2) + ' МБ';
+}
+
+function formatDate(ts) {
+    if (!ts) return '—';
+    try {
+        const d = ts.toDate ? ts.toDate() : new Date(ts);
+        return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' });
+    } catch (e) { return '—'; }
+}
+
+async function loadOSList() {
+    const container = document.getElementById('osListContainer');
+    try {
+        const snap = await db.collection('published_os').orderBy('publishedAt', 'desc').get();
+        if (snap.empty) {
+            container.innerHTML = '<div class="empty-state">Пока нет доступных версий</div>';
+            return;
+        }
+        const list = document.createElement('div');
+        list.className = 'os-list';
+        snap.forEach(doc => {
+            const data = doc.data();
+            const card = document.createElement('div');
+            card.className = 'os-card';
+            card.innerHTML = `
+                <div class="icon">💠</div>
+                <div class="info">
+                    <div class="version">LoLOS ${data.version}</div>
+                    <div class="meta">
+                        <span>📦 ${formatBytes(data.size || 0)}</span>
+                        <span>📅 ${formatDate(data.publishedAt)}</span>
+                    </div>
+                </div>
+                <div class="download-icon">⬇</div>
+            `;
+            card.onclick = () => downloadManifest(data);
+            list.appendChild(card);
+        });
+        container.innerHTML = '';
+        container.appendChild(list);
+    } catch (e) {
+        console.error(e);
+        container.innerHTML = '<div class="empty-state">Ошибка загрузки: ' + e.message + '</div>';
+    }
+}
+
+function downloadManifest(data) {
+    // Формат: { version, url, size, issued }
+    const manifest = {
+        version: data.version,
+        url: data.url,
+        size: data.size || 0,
+        issued: new Date().toISOString()
+    };
+    const blob = new Blob([JSON.stringify(manifest, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'LoLOS_' + data.version + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('✅ Файл обновления скачан', 'success');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('📥 Download LoLOS загружен');
+    loadOSList();
+});
+</script>
+</body>
+</html>
